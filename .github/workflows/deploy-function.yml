@@ -52,6 +52,7 @@ jobs:
 
   publish:
     runs-on: ubuntu-22.04
+    needs: build
     steps:
       - name: Create release
         id: create_release
