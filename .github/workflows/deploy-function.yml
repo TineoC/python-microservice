@@ -130,7 +130,7 @@ jobs:
 
       - name: Destroy test function
         if: ${{ always() }}
-        run: aws lambda delete-function --function-name test-function
+        run: aws lambda delete-function --function-name ${{ vars.AWS_TEST_LAMBDA_FUNCTION_NAME }}
 
   deploy:
     runs-on: ubuntu-22.04
