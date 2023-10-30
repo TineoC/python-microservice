@@ -42,8 +42,7 @@ jobs:
 
       - name: Zip bundle
         run: |
-          cd function
-          zip -r ../${{ github.sha }}.zip .
+          zip -r ./${{ github.sha }}.zip ./function
 
       - name: Archive artifact
         uses: actions/upload-artifact@v3
