@@ -107,7 +107,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-22.04
-    needs: publish
+    needs: upload
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v3
