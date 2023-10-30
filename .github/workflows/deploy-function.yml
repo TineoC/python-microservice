@@ -123,7 +123,7 @@ jobs:
 
       - name: Update function code
         run: |
-          aws lambda update-funciton-code \
+          aws lambda update-function-code \
             --function-name ${{ vars.AWS_LAMBDA_FUNCION_NAME }} \
             --s3-bucket ${{ vars.BUCKET_NAME }} \
             --s3-key ${{ github.sha }}.zip \
