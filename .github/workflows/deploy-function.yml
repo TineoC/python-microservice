@@ -104,3 +104,27 @@ jobs:
       - name: Upload to S3
         run: |
           aws s3 cp ${{ github.sha }}.zip s3://${{ vars.BUCKET_NAME }}/${{ github.sha }}.zip
+
+  deploy:
+    runs-on: ubuntu-22.04
+    needs: publish
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: zipped-bundle
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Update function code
+        run: |
+          aws lambda update-funciton-code \
+            --function-name ${{ vars.AWS_LAMBDA_FUNCION_NAME }} \
+            --s3-bucket ${{ vars.BUCKET_NAME }} \
+            --s3-key ${{ github.sha }}.zip \
+            --publish
