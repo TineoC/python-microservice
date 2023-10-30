@@ -119,10 +119,10 @@ jobs:
       - name: Create test function
         run: |
           aws lambda create-function \
-            --function-name ${{ vars.AWS_TEST_LAMBDA_FUNCTION_NAME }} \  
-            --code S3Bucket=${{ vars.BUCKET_NAME }},S3Key=${{ github.sha }}.zip \  
+            --function-name ${{ vars.AWS_TEST_LAMBDA_FUNCTION_NAME }} \
+            --code S3Bucket=${{ vars.BUCKET_NAME }},S3Key=${{ github.sha }}.zip \
             --handler lambda_function.lambda_handler \
-            --runtime python3.8 \  
+            --runtime python3.8 \
             --role arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ vars.AWS_LAMBDA_ROLE_NAME }}
 
       - name: Wait 30 seconds
