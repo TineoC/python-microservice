@@ -133,7 +133,8 @@ jobs:
           aws lambda invoke \
             --function-name ${{ vars.AWS_TEST_LAMBDA_FUNCTION_NAME }}-${{ matrix.input }} \
             --payload $(echo "{\"input\": \"${{ matrix.input }}\"}" | base 64) \
-            --output json out
+            --output json 
+            outfile.txt
           if grep -q "Error" out; then
             exit1
           fi
@@ -143,7 +144,7 @@ jobs:
 
       - name: Destroy test function
         if: ${{ always() }}
-        run: aws lambda delete-function --function-name ${{ vars.AWS_TEST_LAMBDA_FUNCTION_NAME }}
+        run: aws lambda delete-function --function-name ${{ vars.AWS_TEST_LAMBDA_FUNCTION_NAME }}-${{ matrix.input }}
 
   deploy:
     runs-on: ubuntu-22.04
