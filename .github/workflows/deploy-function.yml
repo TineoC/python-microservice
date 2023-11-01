@@ -128,13 +128,14 @@ jobs:
             --runtime python3.8 \
             --role arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ vars.AWS_LAMBDA_ROLE_NAME }}
 
+      - name: Wait 15 seconds
+        run: sleep 15
+
       - name: Invoke test function
         run: |
-          aws lambda invoke \
-            --function-name ${{ vars.AWS_TEST_LAMBDA_FUNCTION_NAME }}-${{ matrix.input }} \
-            --payload $(echo "{\"input\": \"${{ matrix.input }}\"}" | base 64) \
-            --output json 
-            outfile.txt
+          aws lambda invoke --function-name ${{ vars.AWS_TEST_LAMBDA_FUNCTION_NAME }}-${{ matrix.input }} \
+            --payload $(echo "{\"input\": \"${{ matrix.input }}\"}" | base64) \
+            --output json out
           if grep -q "Error" out; then
             exit1
           fi
