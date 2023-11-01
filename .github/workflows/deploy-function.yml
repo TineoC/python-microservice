@@ -171,4 +171,15 @@ jobs:
             --s3-key ${{ github.sha }}.zip \
             --publish
 
+  docs:
+    runs-on: ubuntu-22.04
+    needs: deploy
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
 
+      - name: Deploy docs
+        uses: mhausenblas/mkdocs-deploy-gh-pages@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CONFIG_FILE: mkdocs.yaml
