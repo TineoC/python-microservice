@@ -178,8 +178,16 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Deploy docs
-        uses: mhausenblas/mkdocs-deploy-gh-pages@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CONFIG_FILE: mkdocs.yaml
+      - name: Create docs folder
+        run: mkdir docs
+
+      - name: Convert md to html
+        uses: docker://pandoc/core:2.9
+        with:
+          args: userguide.md -t html -o docs/index.html
+
+      - name: Deploy Pages site
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages
+          folder: docs
